@@ -1,0 +1,5 @@
+{
+    "name": ".product-name",
+    "price": "[data-testid=\"price\"]",
+    "rating": ".product-rating"
+}
