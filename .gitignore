@@ -7,4 +7,5 @@ __pycache__/
 .vscode/
 .idea/
 .env
-*.logconfig/healing_log.json
+*.log
+config/healing_log.json
