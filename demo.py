@@ -69,7 +69,7 @@ def selector_matches(expected, actual):
         return True
 
     # EvoScrape may generate a more specific selector
-    # such as .price.price-updated
+    # such as .price.price-new
     if actual == ".price" + expected:
         return True
 
@@ -123,7 +123,10 @@ def main():
         # Test 1
         if version == "1":
 
-            if healed_selector == ".price-new":
+            if selector_matches(
+                ".price-new",
+                healed_selector
+            ):
 
                 print(
                     "✅ ORIGINAL SELECTOR WORKING"
