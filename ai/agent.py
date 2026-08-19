@@ -1,11 +1,9 @@
 from bs4 import BeautifulSoup
 import re
 from playwright.sync_api import sync_playwright
-from validator import validate_selector
-from healer import heal_selector
 
-
-
+from .validator import validate_selector
+from .healer import heal_selector
 
 
 URL = "http://localhost:8000"
@@ -19,15 +17,16 @@ def get_real_html():
 
         page = browser.new_page()
 
-        page.goto(URL)
+        try:
+            page.goto(URL)
+            page.wait_for_load_state("networkidle")
 
-        page.wait_for_load_state("networkidle")
+            html = page.content()
 
-        html = page.content()
+            return html
 
-        browser.close()
-
-        return html
+        finally:
+            browser.close()
 
 
 def analyze_html(html):
@@ -135,11 +134,13 @@ if __name__ == "__main__":
 
             print("\n🔧 Starting self-healing...")
 
-            new_selector = heal_selector(
+            healed = heal_selector(
                 best["text"]
             )
 
-            if new_selector:
+            if healed:
+
+                new_selector = healed["selector"]
 
                 print("\n🧪 Validating healed selector...")
 
@@ -151,13 +152,29 @@ if __name__ == "__main__":
                 if healed_result["valid"]:
 
                     print("\n❤️ SELF-HEALING SUCCESSFUL")
+
                     print("Old selector:", selector)
                     print("New selector:", new_selector)
+                    print("Score:", healed["score"])
+
+                    print(
+                        "Reasons:",
+                        ", ".join(healed["reasons"])
+                    )
 
                 else:
 
                     print("\n💥 HEALING FAILED")
-                    print("Replacement selector:", new_selector)
+
+                    print(
+                        "Replacement selector:",
+                        new_selector
+                    )
+
+                    print(
+                        "Reason:",
+                        healed_result["reason"]
+                    )
 
             else:
 
