@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EvoScrape Test Store</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+        }
+
+        .product-card {
+            width: 350px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-name {
+            font-size: 26px;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: bold;
+            color: green;
+            margin: 20px 0;
+        }
+
+        .product-rating {
+            font-size: 18px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="product-card">
+
+    <h2 class="product-name">
+        Gaming Laptop
+    </h2>
+
+    <div class="price">
+        ₹49,999
+    </div>
+
+    <div class="product-rating">
+        4.5
+    </div>
+
+</div>
+
+<script>
+
+fetch("version.txt")
+    .then(response => response.text())
+    .then(version => {
+
+        const price = document.querySelector(".price");
+
+        version = version.trim();
+
+        if (version === "1") {
+            price.className = "price price-new";
+        }
+
+        else if (version === "2") {
+            price.className = "price price-updated";
+        }
+
+        else if (version === "3") {
+            price.className = "price product-cost";
+        }
+
+        else if (version === "4") {
+            price.className = "price price-final";
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>
